@@ -24,6 +24,7 @@ import (
 	"github.com/yoanbernabeu/grepai/git"
 	"github.com/yoanbernabeu/grepai/indexer"
 	"github.com/yoanbernabeu/grepai/rpg"
+	"github.com/yoanbernabeu/grepai/internal/pathutil"
 	"github.com/yoanbernabeu/grepai/store"
 	"github.com/yoanbernabeu/grepai/trace"
 	"github.com/yoanbernabeu/grepai/watcher"
@@ -917,11 +918,12 @@ func discoverWorktreesForWatch(projectRoot string) []string {
 }
 
 func canonicalPath(path string) string {
-	if resolved, err := filepath.EvalSymlinks(path); err == nil {
-		path = resolved
+	if resolved, err := pathutil.ResolveReal(path); err == nil {
+		return resolved
 	}
+	// Last resort: just clean the path
 	if abs, err := filepath.Abs(path); err == nil {
-		path = abs
+		return filepath.Clean(abs)
 	}
 	return filepath.Clean(path)
 }
