@@ -122,6 +122,55 @@ func TestNewFromConfig_OpenRouter(t *testing.T) {
 	}
 }
 
+func TestNewFromConfig_Gemini(t *testing.T) {
+	t.Setenv("GEMINI_API_KEY", "test-key")
+
+	cfg := &config.Config{
+		Embedder: config.EmbedderConfig{
+			Provider: "gemini",
+			Model:    "gemini-embedding-001",
+		},
+	}
+
+	emb, err := NewFromConfig(cfg)
+	if err != nil {
+		t.Fatalf("failed to create embedder: %v", err)
+	}
+	defer emb.Close()
+
+	geminiEmb, ok := emb.(*GeminiEmbedder)
+	if !ok {
+		t.Errorf("expected *GeminiEmbedder, got %T", emb)
+	}
+
+	if geminiEmb.model != "gemini-embedding-001" {
+		t.Errorf("expected model gemini-embedding-001, got %s", geminiEmb.model)
+	}
+}
+
+func TestNewFromConfig_GeminiWithDimensions(t *testing.T) {
+	t.Setenv("GEMINI_API_KEY", "test-key")
+
+	dimensions := 768
+	cfg := &config.Config{
+		Embedder: config.EmbedderConfig{
+			Provider:   "gemini",
+			Model:      "gemini-embedding-001",
+			Dimensions: &dimensions,
+		},
+	}
+
+	emb, err := NewFromConfig(cfg)
+	if err != nil {
+		t.Fatalf("failed to create embedder: %v", err)
+	}
+	defer emb.Close()
+
+	if emb.Dimensions() != 768 {
+		t.Errorf("expected dimensions 768, got %d", emb.Dimensions())
+	}
+}
+
 func TestNewFromConfig_UnknownProvider(t *testing.T) {
 	cfg := &config.Config{
 		Embedder: config.EmbedderConfig{
