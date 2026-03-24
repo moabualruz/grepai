@@ -1,0 +1,32 @@
+============================================================
+BENCHMARK: code-community
+============================================================
+Date:       2026-03-24T03:00:02+01:00
+Model:      text-embedding-nomic-embed-code
+LMS Path:   lmstudio-community/nomic-embed-code-GGUF/nomic-embed-code-Q4_K_M.gguf
+Project:    crispy-tivi (1785 files, 11189 chunks)
+Settings:   ctx=2048 chunk=512 overlap=50
+
+METRICS:
+  Model load:     2884ms
+  Dimensions:     0 (expected 3584)
+  NonZero values: 0 / 0
+  Broken:         yes
+  Index time:     1186s
+  Index size:     83M
+  Avg search:     579ms
+  Total search:   5791ms (10 queries)
+
+SEARCH RESULTS:
+  score: 0.6449  lib\core\widgets\video_preview_widget.dart:94-119                 1068ms
+  score: 0.7360  lib\features\iptv\presentation\widgets\channel_epg_overlay.dart:164-176 560ms
+  score: 0.6122  rust\crates\crispy-core\src\services\url_validator.rs:132-136     503ms
+  score: 0.7271  rust\crates\crispy-m3u\src\lib.rs:1-30                            533ms
+  score: 0.6533  lib\core\network\domain_error.dart:164-207                        527ms
+  score: 0.6176  lib\features\favorites\presentation\widgets\favorites_tv_layout.dart:31-41 514ms
+  score: 0.6758  lib\features\iptv\presentation\providers\channel_list_state.dart:234-294 515ms
+  score: 0.6418  rust\crates\crispy-core\src\database\migrations\001_initial_schema.sql:48-106 515ms
+  score: 0.6298  lib\features\home\presentation\widgets\home_sections.dart:556-611 539ms
+  score: 0.6453  rust\crates\crispy-core\src\http_client.rs:1-50                   517ms
+
+============================================================

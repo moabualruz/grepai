@@ -1,0 +1,37 @@
+[
+  {
+    "tag": "text-v1.5",
+    "model_id": "text-embedding-nomic-embed-text-v1.5@f16",
+    "lms_path": "nomic-ai/nomic-embed-text-v1.5-GGUF/nomic-embed-text-v1.5.f16.gguf",
+    "dims": 768,
+    "ctx": 2048
+  },
+  {
+    "tag": "code-community",
+    "model_id": "text-embedding-nomic-embed-code",
+    "lms_path": "lmstudio-community/nomic-embed-code-GGUF/nomic-embed-code-Q4_K_M.gguf",
+    "dims": 3584,
+    "ctx": 2048
+  },
+  {
+    "tag": "code-official",
+    "model_id": "text-embedding-nomic-embed-code",
+    "lms_path": "nomic-ai/nomic-embed-code-GGUF/nomic-embed-code-Q4_K_M.gguf",
+    "dims": 3584,
+    "ctx": 2048
+  },
+  {
+    "tag": "v2-moe",
+    "model_id": "text-embedding-nomic-embed-text-v2-moe",
+    "lms_path": "nomic-ai/nomic-embed-text-v2-moe-GGUF/nomic-embed-text-v2-moe.Q8_0.gguf",
+    "dims": 768,
+    "ctx": 2048
+  },
+  {
+    "tag": "bge-m3",
+    "model_id": "text-embedding-bge-m3",
+    "lms_path": "BAAI/bge-m3-GGUF/bge-m3-f16.gguf",
+    "dims": 1024,
+    "ctx": 2048
+  }
+]

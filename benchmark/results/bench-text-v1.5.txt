@@ -1,0 +1,32 @@
+============================================================
+BENCHMARK: text-v1.5
+============================================================
+Date:       2026-03-24T03:00:03+01:00
+Model:      text-embedding-nomic-embed-text-v1.5@f16
+LMS Path:   nomic-ai/nomic-embed-text-v1.5-GGUF/nomic-embed-text-v1.5.f16.gguf
+Project:    crispy-tivi (1785 files, 11189 chunks)
+Settings:   ctx=2048 chunk=512 overlap=50
+
+METRICS:
+  Model load:     1604ms
+  Dimensions:     768 (expected 768)
+  NonZero values: 767 / 768
+  Broken:         no
+  Index time:     265s
+  Index size:     83M
+  Avg search:     509ms
+  Total search:   5094ms (10 queries)
+
+SEARCH RESULTS:
+  score: 0.6449  lib\core\widgets\video_preview_widget.dart:94-119                 440ms
+  score: 0.7360  lib\features\iptv\presentation\widgets\channel_epg_overlay.dart:164-176 504ms
+  score: 0.6122  rust\crates\crispy-core\src\services\url_validator.rs:132-136     519ms
+  score: 0.7271  rust\crates\crispy-m3u\src\lib.rs:1-30                            523ms
+  score: 0.6533  lib\core\network\domain_error.dart:164-207                        539ms
+  score: 0.6176  lib\features\favorites\presentation\widgets\favorites_tv_layout.dart:31-41 546ms
+  score: 0.6758  lib\features\iptv\presentation\providers\channel_list_state.dart:234-294 551ms
+  score: 0.6418  rust\crates\crispy-core\src\database\migrations\001_initial_schema.sql:48-106 540ms
+  score: 0.6298  lib\features\home\presentation\widgets\home_sections.dart:556-611 531ms
+  score: 0.6453  rust\crates\crispy-core\src\http_client.rs:1-50                   401ms
+
+============================================================

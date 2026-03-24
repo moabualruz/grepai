@@ -1,0 +1,130 @@
+========================================
+BENCHMARK: lmstudio-community/text-embedding-nomic-embed-code
+========================================
+Date: 2026-03-24T00:16:08+01:00
+Project: crispy-tivi (Flutter/Dart)
+
+METRICS:
+  Model load time:    2625ms
+  Dimensions:         3584
+  Context length:     8192
+  Files indexed:      1785
+  Total chunks:       11189
+  Index time:         115920ms (115s)
+  Index size:         83M
+  Total search time:  4251ms (10 queries)
+  Avg search time:    425ms
+
+SEARCH RESULTS:
+
+Query 1: "how does the video player handle buffering" (431ms)
+─── Result 1 (score: 0.6449) ───
+File: lib\core\widgets\video_preview_widget.dart:94-119
+─── Result 2 (score: 0.6386) ───
+File: lib\features\player\domain\crispy_player.dart:59-127
+─── Result 3 (score: 0.6329) ───
+File: lib\features\player\data\player_web_bridge_mixin.dart:59-99
+─── Result 4 (score: 0.6305) ───
+File: lib\features\player\domain\crispy_player.dart:118-171
+─── Result 5 (score: 0.6229) ───
+
+Query 2: "EPG channel list rendering" (422ms)
+─── Result 1 (score: 0.7360) ───
+File: lib\features\iptv\presentation\widgets\channel_epg_overlay.dart:164-176
+─── Result 2 (score: 0.7147) ───
+File: lib\features\iptv\presentation\providers\channel_providers.dart:352-386
+─── Result 3 (score: 0.7135) ───
+File: lib\features\iptv\presentation\screens\channel_list_screen.dart:424-480
+─── Result 4 (score: 0.7048) ───
+File: lib\features\iptv\domain\repositories\epg_repository.dart:1-26
+─── Result 5 (score: 0.7025) ───
+
+Query 3: "authentication and login flow" (410ms)
+─── Result 1 (score: 0.6122) ───
+File: rust\crates\crispy-core\src\services\url_validator.rs:132-136
+─── Result 2 (score: 0.5990) ───
+File: lib\features\media_servers\shared\presentation\screens\media_server_login_screen.dart:37-97
+─── Result 3 (score: 0.5812) ───
+File: lib\features\media_servers\shared\data\models\media_server_auth_result.g.dart:17-23
+─── Result 4 (score: 0.5770) ───
+File: rust\crates\crispy-core\src\services\stalker_sync.rs:477-538
+─── Result 5 (score: 0.5677) ───
+
+Query 4: "function that parses m3u playlist" (424ms)
+─── Result 1 (score: 0.7271) ───
+File: rust\crates\crispy-m3u\src\lib.rs:1-30
+─── Result 2 (score: 0.6932) ───
+File: rust\crates\crispy-m3u\src\parser.rs:1-56
+─── Result 3 (score: 0.6744) ───
+File: rust\crates\crispy-m3u\src\writer.rs:1-68
+─── Result 4 (score: 0.6567) ───
+File: lib\features\iptv\data\parsers\m3u_parser.dart:61-77
+─── Result 5 (score: 0.6550) ───
+
+Query 5: "error handling for network requests" (424ms)
+─── Result 1 (score: 0.6533) ───
+File: lib\core\network\domain_error.dart:164-207
+─── Result 2 (score: 0.6501) ───
+File: lib\features\media_servers\shared\utils\error_sanitizer.dart:3-7
+─── Result 3 (score: 0.6493) ───
+File: lib\core\network\domain_error.dart:1-66
+─── Result 4 (score: 0.6343) ───
+File: lib\features\media_servers\shared\utils\error_sanitizer.dart:1-7
+─── Result 5 (score: 0.6233) ───
+
+Query 6: "state management for favorites" (436ms)
+─── Result 1 (score: 0.6176) ───
+File: lib\features\favorites\presentation\widgets\favorites_tv_layout.dart:31-41
+─── Result 2 (score: 0.5915) ───
+File: lib\features\favorites\presentation\providers\favorites_history_provider.dart:3-11
+─── Result 3 (score: 0.5873) ───
+File: lib\features\favorites\presentation\providers\favorites_controller.dart:1-53
+─── Result 4 (score: 0.5867) ───
+File: lib\features\favorites\data\repositories\favorites_repository_impl.dart:56-64
+─── Result 5 (score: 0.5849) ───
+
+Query 7: "how are TV channels sorted and filtered" (425ms)
+─── Result 1 (score: 0.6758) ───
+File: lib\features\iptv\presentation\providers\channel_list_state.dart:234-294
+─── Result 2 (score: 0.6674) ───
+File: lib\features\iptv\presentation\providers\channel_list_state.dart:291-354
+─── Result 3 (score: 0.6633) ───
+File: lib\features\iptv\presentation\providers\channel_list_state.dart:1-55
+─── Result 4 (score: 0.6549) ───
+File: lib\features\iptv\presentation\providers\channel_list_state.dart:105-177
+─── Result 5 (score: 0.6505) ───
+
+Query 8: "database schema for storing channels" (424ms)
+─── Result 1 (score: 0.6418) ───
+File: rust\crates\crispy-core\src\database\migrations\001_initial_schema.sql:48-106
+─── Result 2 (score: 0.6272) ───
+File: rust\crates\crispy-core\src\database\migrations\001_initial_schema.sql:102-152
+─── Result 3 (score: 0.6235) ───
+File: lib\features\iptv\presentation\providers\channel_list_state.dart:234-294
+─── Result 4 (score: 0.6181) ───
+File: lib\features\iptv\presentation\providers\channel_providers.dart:175-242
+─── Result 5 (score: 0.6179) ───
+
+Query 9: "widget that displays program guide" (425ms)
+─── Result 1 (score: 0.6298) ───
+File: lib\features\home\presentation\widgets\home_sections.dart:556-611
+─── Result 2 (score: 0.6159) ───
+File: lib\features\home\presentation\widgets\home_sections.dart:498-560
+─── Result 3 (score: 0.6152) ───
+File: lib\features\iptv\presentation\screens\channel_list_screen.dart:609-616
+─── Result 4 (score: 0.6118) ───
+File: lib\features\iptv\presentation\widgets\epg_reminder_sheet.dart:150-213
+─── Result 5 (score: 0.6062) ───
+
+Query 10: "HTTP client configuration and interceptors" (430ms)
+─── Result 1 (score: 0.6453) ───
+File: rust\crates\crispy-core\src\http_client.rs:1-50
+─── Result 2 (score: 0.6304) ───
+File: rust\crates\crispy-core\src\http_client.rs:45-100
+─── Result 3 (score: 0.6140) ───
+File: rust\crates\crispy-core\src\http_client.rs:183-244
+─── Result 4 (score: 0.6069) ───
+File: lib\core\network\http_service.dart:50-110
+─── Result 5 (score: 0.5987) ───
+
+========================================
