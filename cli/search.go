@@ -263,6 +263,9 @@ func runSearch(cmd *cobra.Command, args []string) error {
 
 	// Create searcher with boost config
 	searcher := search.NewSearcher(st, emb, cfg.Search)
+	if cfg.Store.MultiModel {
+		searcher.SetEmbedModelFilter(cfg.EmbedModelTag())
+	}
 
 	normalizedPath, err := search.NormalizeProjectPathPrefix(searchPath, projectRoot)
 	if err != nil {
