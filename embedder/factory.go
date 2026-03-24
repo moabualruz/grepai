@@ -65,6 +65,20 @@ func NewFromConfig(cfg *config.Config) (Embedder, error) {
 		}
 		return NewOpenRouterEmbedder(opts...)
 
+	case "gemini":
+		opts := []GeminiOption{
+			WithGeminiModel(cfg.Embedder.Model),
+			WithGeminiKey(cfg.Embedder.APIKey),
+			WithGeminiParallelism(cfg.Embedder.Parallelism),
+		}
+		if cfg.Embedder.Endpoint != "" {
+			opts = append(opts, WithGeminiEndpoint(cfg.Embedder.Endpoint))
+		}
+		if cfg.Embedder.Dimensions != nil {
+			opts = append(opts, WithGeminiDimensions(*cfg.Embedder.Dimensions))
+		}
+		return NewGeminiEmbedder(opts...)
+
 	default:
 		return nil, fmt.Errorf("unknown embedding provider: %s", cfg.Embedder.Provider)
 	}
