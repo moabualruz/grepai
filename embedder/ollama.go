@@ -97,12 +97,34 @@ func (e *OllamaEmbedder) Embed(ctx context.Context, text string) ([]float32, err
 	return embeddings[0], nil
 }
 
-// EmbedBatch sends multiple texts in a single /api/embed call.
+// EmbedBatch sends multiple texts to /api/embed, splitting into sub-batches
+// of defaultOllamaBatchSize to avoid timeouts on large inputs.
 func (e *OllamaEmbedder) EmbedBatch(ctx context.Context, texts []string) ([][]float32, error) {
 	if len(texts) == 0 {
 		return nil, nil
 	}
 
+	results := make([][]float32, 0, len(texts))
+
+	for i := 0; i < len(texts); i += defaultOllamaBatchSize {
+		end := i + defaultOllamaBatchSize
+		if end > len(texts) {
+			end = len(texts)
+		}
+		batch := texts[i:end]
+
+		embeddings, err := e.embedBatchRequest(ctx, batch)
+		if err != nil {
+			return nil, err
+		}
+		results = append(results, embeddings...)
+	}
+
+	return results, nil
+}
+
+// embedBatchRequest sends a single /api/embed request with the given texts.
+func (e *OllamaEmbedder) embedBatchRequest(ctx context.Context, texts []string) ([][]float32, error) {
 	reqBody := ollamaEmbedRequest{
 		Model: e.model,
 		Input: texts,
@@ -130,7 +152,6 @@ func (e *OllamaEmbedder) EmbedBatch(ctx context.Context, texts []string) ([][]fl
 		body, _ := io.ReadAll(resp.Body)
 		bodyStr := string(body)
 
-		// Check for context length error
 		if resp.StatusCode == http.StatusInternalServerError &&
 			strings.Contains(bodyStr, "exceeds the context length") {
 			estimatedTokens := 0
