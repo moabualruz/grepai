@@ -15,6 +15,7 @@ func NewFromConfig(cfg *config.Config) (Embedder, error) {
 		opts := []OllamaOption{
 			WithOllamaEndpoint(cfg.Embedder.Endpoint),
 			WithOllamaModel(cfg.Embedder.Model),
+			WithOllamaParallelism(cfg.Embedder.Parallelism),
 		}
 		if cfg.Embedder.Dimensions != nil {
 			opts = append(opts, WithOllamaDimensions(*cfg.Embedder.Dimensions))
