@@ -2570,24 +2570,41 @@ func runWorkspaceWatchForeground(logDir string, ws *config.Workspace) error {
 
 	runtimes := make(map[string]*workspaceProjectRuntime, len(ws.Projects))
 	watchers := make([]*watcher.Watcher, 0, len(ws.Projects))
+	var mu sync.Mutex
+
+	// Scan projects concurrently. File scanning and chunking are CPU/IO-bound,
+	// while embedding serializes at the GPU. Overlapping scan with embed is a net win.
+	var wg sync.WaitGroup
+	sem := make(chan struct{}, 4) // limit concurrent project scans
 
 	for _, project := range ws.Projects {
-		if !isBackgroundChild {
-			fmt.Printf("\nIndexing project: %s (%s)\n", project.Name, project.Path)
-		} else {
-			log.Printf("Indexing project: %s (%s)", project.Name, project.Path)
-		}
+		project := project
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			sem <- struct{}{}
+			defer func() { <-sem }()
 
-		runtime, w, rtErr := initializeWorkspaceRuntime(ctx, ws, project, emb, st, isBackgroundChild)
-		if rtErr != nil {
-			log.Printf("Warning: failed to initialize runtime for %s: %v", project.Name, rtErr)
-			continue
-		}
+			if !isBackgroundChild {
+				fmt.Printf("\nIndexing project: %s (%s)\n", project.Name, project.Path)
+			} else {
+				log.Printf("Indexing project: %s (%s)", project.Name, project.Path)
+			}
 
-		projectKey := canonicalPath(project.Path)
-		runtimes[projectKey] = runtime
-		watchers = append(watchers, w)
+			runtime, w, rtErr := initializeWorkspaceRuntime(ctx, ws, project, emb, st, isBackgroundChild)
+			if rtErr != nil {
+				log.Printf("Warning: failed to initialize runtime for %s: %v", project.Name, rtErr)
+				return
+			}
+
+			projectKey := canonicalPath(project.Path)
+			mu.Lock()
+			runtimes[projectKey] = runtime
+			watchers = append(watchers, w)
+			mu.Unlock()
+		}()
 	}
+	wg.Wait()
 
 	defer func() {
 		for _, w := range watchers {
