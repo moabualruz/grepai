@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Multi-Model Index Support**: New `store.multi_model` config option tags chunks with their embedding provider/model. When enabled, search returns only chunks matching the current model, enabling safe model switching without full re-indexing.
+- **Startup Validation**: Watch and search commands now validate that no untagged chunks exist when `multi_model` is enabled, with a clear error message directing users to run `migrate-model`.
+
 ## [0.35.0] - 2026-03-16
 
 ### Added
