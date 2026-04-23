@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Multi-Model Index Support**: New `store.multi_model` config option tags chunks with their embedding provider/model. When enabled, search returns only chunks matching the current model, enabling safe model switching without full re-indexing.
 - **Startup Validation**: Watch and search commands now validate that no untagged chunks exist when `multi_model` is enabled, with a clear error message directing users to run `migrate-model`.
+- **migrate-model Command**: New `grepai migrate-model <provider/model>` command stamps legacy untagged chunks with a model identifier. Metadata-only operation; no embedding API calls.
 
 ## [0.35.0] - 2026-03-16
 
