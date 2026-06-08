@@ -40,6 +40,10 @@ const (
 	DefaultOpenAILargeDimensions    = 3072
 	DefaultQwen8BDimensions         = 4096
 	DefaultOpenAIParallelism        = 4
+	// DefaultOllamaParallelism is intentionally lower than OpenAI's: a local Ollama
+	// server is usually a single GPU, so 4 concurrent /api/embed requests can pressure
+	// or OOM it. Matches embedder.defaultOllamaParallelism.
+	DefaultOllamaParallelism = 2
 
 	DefaultPostgresDSN    = "postgres://localhost:5432/grepai"
 	DefaultQdrantEndpoint = "localhost"
@@ -112,7 +116,7 @@ type EmbedderConfig struct {
 	Endpoint    string `yaml:"endpoint,omitempty"`
 	APIKey      string `yaml:"api_key,omitempty"`
 	Dimensions  *int   `yaml:"dimensions,omitempty"`
-	Parallelism int    `yaml:"parallelism"` // Number of parallel workers for batch embedding (default: 4)
+	Parallelism int    `yaml:"parallelism"` // Number of parallel workers for batch embedding (default: 2 for ollama, 4 for cloud providers)
 }
 
 // GetDimensions returns the configured dimensions or a default value.
@@ -551,9 +555,14 @@ func (c *Config) applyDefaults() {
 		}
 	}
 
-	// Parallelism default (only used by OpenAI embedder)
+	// Parallelism default: Ollama (local, usually single-GPU) defaults lower than the
+	// cloud providers to avoid pressuring/OOMing the local server.
 	if c.Embedder.Parallelism <= 0 {
-		c.Embedder.Parallelism = 4
+		if c.Embedder.Provider == "ollama" {
+			c.Embedder.Parallelism = DefaultOllamaParallelism
+		} else {
+			c.Embedder.Parallelism = DefaultOpenAIParallelism
+		}
 	}
 
 	// Chunking defaults
