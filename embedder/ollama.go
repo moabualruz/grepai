@@ -115,12 +115,47 @@ func (e *OllamaEmbedder) EmbedBatch(ctx context.Context, texts []string) ([][]fl
 
 		embeddings, err := e.embedBatchRequest(ctx, batch)
 		if err != nil {
+			// A ContextLengthError from a multi-text sub-batch carries ChunkIndex 0
+			// (embedBatchRequest cannot tell which input in the batch overflowed). The
+			// indexer's re-chunk recovery reads ChunkIndex as the absolute index into the
+			// file's chunk list, so a 0 here would always re-chunk chunk 0 regardless of
+			// which chunk actually overflowed, exhaust the retry budget, and fail the whole
+			// file. Pinpoint the real failing input by re-issuing the sub-batch one text at
+			// a time, then re-wrap the error with its ABSOLUTE index (i + offset).
+			if ctxErr := AsContextLengthError(err); ctxErr != nil && len(batch) > 1 {
+				return nil, e.locateContextLengthFailure(ctx, batch, i)
+			}
+			if ctxErr := AsContextLengthError(err); ctxErr != nil {
+				// Single-text sub-batch: the absolute index is i.
+				ctxErr.ChunkIndex = i
+				return nil, ctxErr
+			}
 			return nil, err
 		}
 		results = append(results, embeddings...)
 	}
 
 	return results, nil
+}
+
+// locateContextLengthFailure re-issues a sub-batch one text at a time to find the
+// exact input that overflows the context window, and returns a ContextLengthError
+// whose ChunkIndex is the ABSOLUTE index (base + offset) into the original input
+// slice. If no single text overflows on its own (the failure was an aggregate of
+// the batch, not one oversized text), it falls back to the sub-batch start index.
+func (e *OllamaEmbedder) locateContextLengthFailure(ctx context.Context, batch []string, base int) error {
+	for offset, text := range batch {
+		if _, err := e.embedBatchRequest(ctx, []string{text}); err != nil {
+			if ctxErr := AsContextLengthError(err); ctxErr != nil {
+				ctxErr.ChunkIndex = base + offset
+				return ctxErr
+			}
+			// A non-context error while probing: surface it directly.
+			return err
+		}
+	}
+	// No single text overflowed alone; point recovery at the sub-batch start.
+	return NewContextLengthError(base, 0, 0, "context length exceeded for sub-batch (no single input overflowed)")
 }
 
 // embedBatchRequest sends a single /api/embed request with the given texts.
