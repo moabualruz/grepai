@@ -12,7 +12,7 @@ permissions:
 jobs:
   lint:
     name: Lint
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64, generic]
     steps:
       - uses: actions/checkout@v6
 
@@ -34,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [[self-hosted, linux, x64, generic], macos-latest, windows-latest]
         go-version: ["1.22", "1.23"]
     steps:
       - uses: actions/checkout@v6
@@ -53,7 +53,7 @@ jobs:
         run: go test -v -race -coverprofile=coverage.out -covermode=atomic ./...
 
       - name: Upload coverage
-        if: matrix.os == 'ubuntu-latest' && matrix.go-version == '1.22'
+        if: runner.os == 'Linux' && matrix.go-version == '1.22'
         uses: codecov/codecov-action@v5
         with:
           files: coverage.out
@@ -61,7 +61,7 @@ jobs:
 
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64, generic]
     needs: [lint, test]
     steps:
       - uses: actions/checkout@v6
