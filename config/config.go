@@ -188,8 +188,8 @@ func DefaultEmbedderForProvider(provider string) EmbedderConfig {
 }
 
 type StoreConfig struct {
-	Backend    string         `yaml:"backend"` // gob | postgres | qdrant
-	MultiModel bool          `yaml:"multi_model,omitempty"` // When true, tag chunks with provider/model and filter on search
+	Backend    string         `yaml:"backend"`               // gob | postgres | qdrant
+	MultiModel bool           `yaml:"multi_model,omitempty"` // When true, tag chunks with provider/model and filter on search
 	Postgres   PostgresConfig `yaml:"postgres,omitempty"`
 	Qdrant     QdrantConfig   `yaml:"qdrant,omitempty"`
 }

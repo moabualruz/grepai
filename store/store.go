@@ -14,7 +14,7 @@ type Chunk struct {
 	Content     string    `json:"content"`
 	Vector      []float32 `json:"vector"`
 	Hash        string    `json:"hash"`
-	ContentHash string    `json:"content_hash"` // SHA256 of raw content (path-independent)
+	ContentHash string    `json:"content_hash"`          // SHA256 of raw content (path-independent)
 	EmbedModel  string    `json:"embed_model,omitempty"` // "provider/model" tag for multi-model indexing
 	UpdatedAt   time.Time `json:"updated_at"`
 }
